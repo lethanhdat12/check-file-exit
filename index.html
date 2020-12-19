@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Check File Exit</title>
+    <style>
+        .hiden {
+            display: none;
+        }
+
+        .showErr {
+            color: red;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-box m-auto w-50">
+            <form id="formCheckFileExis">
+                <div class="form-group">
+                    <label for="filename">File name</label>
+                    <input type="text" class="form-control" id="filename" aria-describedby="emailHelp"
+                        placeholder="file name" autocomplete="off">
+                </div>
+                <div class="form-row">
+                    <div class="col-md-8">
+                        <label for="capcha">Nhập captch</label>
+                        <input type="text" class="form-control" id="capcha" placeholder="capcha" autocomplete="off">
+                        <span id="err" class="err hiden">Capcha không đúng , hãy nhập lại</span>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="capchaRandon">
+                            <p>Captcha</p>
+                            <p id="capchaService"></p>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Get file</button>
+            </form>
+        </div>
+        <div id="showFile">
+            <!-- để hiển thị file nếu có -->
+        </div>
+    </div>
+    <script src="./js/aes.js"></script>
+    <script src="./js/jquery-3.5.1.js"></script>
+    <script src="./js/CheckFile.js"></script>
+</body>
+
+</html>
