@@ -1,0 +1,51 @@
+.modalErr{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+}
+.modaloverlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.modalDiaglog{
+    width: 500px;
+    height: 200px;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    margin-top: 20px;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: 400;
+    transition:  all 0.35s;
+    animation: translateModal ease-in 0.35s;
+    color: red;
+}
+#closeModal{
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    color: gray;
+    cursor: pointer;
+}
+#closeModal:hover{
+    color: rgba(0, 0, 0, 0.3);
+}
+@keyframes translateModal{
+    0%{
+        transform: translateY(-100%);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}

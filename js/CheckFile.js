@@ -3,10 +3,24 @@ const capcha = document.querySelector('#capcha');
 const formCheckFileExis = document.querySelector('#formCheckFileExis');
 const err = document.querySelector('#err');
 const capchaService = document.querySelector('#capchaService');
+const modalErr = $('.modalErr');
 
 window.onload = () => {
     Captcha();
 }
+
+const setValueDefault = ()=>{
+    modalErr.css({
+        "display" : "none",
+    });
+    filename.value = '';
+    capcha.value = '';
+    Captcha();
+    err.className = 'hiden';
+}
+
+$('#closeModal ').click(setValueDefault);
+$('.modaloverlay').click(setValueDefault);
 
 // set capcha 
 function Captcha() {
@@ -54,7 +68,9 @@ const checkFileExit = (fileUrl) => {
         url: `../output/${fileUrl}.html`,
         type: 'HEAD',
         error: function () {
-            alert('file khong ton tai');
+            modalErr.css({
+                "display" : "block",
+            });
         },
         success: function () {
             $('#showFile').load(this.url, async (data) => {
