@@ -8,16 +8,6 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/style.css">
     <title>Check File Exit</title>
-    <style>
-        .hiden {
-            display: none;
-        }
-
-        .showErr {
-            color: red;
-            display: block;
-        }
-    </style>
 </head>
 
 <body>
@@ -26,14 +16,14 @@
             <form id="formCheckFileExis">
                 <div class="form-group">
                     <label for="filename">File name</label>
-                    <input type="text" class="form-control" id="filename" aria-describedby="emailHelp"
+                    <input type="text" class="form-control inputFilename" id="filename" aria-describedby="emailHelp"
                         placeholder="file name" autocomplete="off">
                 </div>
                 <div class="form-row">
                     <div class="col-md-8">
                         <label for="capcha">Nhập captch</label>
-                        <input type="text" class="form-control" id="capcha" placeholder="capcha" autocomplete="off">
-                        <span id="err" class="err hiden">Capcha không đúng , hãy nhập lại</span>
+                        <input type="text" class="form-control inputCapcha" id="capcha" placeholder="capcha"
+                            autocomplete="off">
                     </div>
                     <div class="col-md-4">
                         <div class="capchaRandon">
@@ -51,13 +41,26 @@
     </div>
     <div class="modalErr">
         <div class="modaloverlay"></div>
-        <div class="modalDiaglog">
-            <p>File Không Tồn Tại Trong Hệ Thống</p>
-            <span id="closeModal">X</span>
+        <div class="modal-content modalWidth">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" id="closeModal">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                File không tồn tại trong hệ thống
+            </div>
         </div>
     </div>
+    </div>
+    <!-- Modal -->
+
     <script src="./js/aes.js"></script>
     <script src="./js/jquery-3.5.1.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
     <script src="./js/CheckFile.js"></script>
 </body>
 
