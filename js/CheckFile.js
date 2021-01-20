@@ -1,15 +1,23 @@
-const formCheckFileExis = $('#formCheckFileExis');
+
+const btnGetfile = $('.btnGetfile');
 const capchaService = $('#capchaService');
 const modalErr = $('.modalErr');
+const modalBody = $('.modal-body');
 const showFile = $('#showFile');
 const inputCapcha = $('.inputCapcha');
 const inputFilename = $('.inputFilename');
-const urlDomain = "https://raw.githack.com";
+const urlDomain = "https://raw.githubusercontent.com/lethanhdat12/check-file-exit/main/output/";
+
+
+const api_key = 'AIzaSyAdhR_5jHcCrbw83MEqtmUh0a2aIiCYyOI';
+
+let btnGet = 1;
 window.onload = () => {
     Captcha();
 }
 
-const showModal = () => {
+const showModal = (data) => {
+    modalBody.html(data);
     modalErr.css({
         "display": "block",
     });
@@ -49,9 +57,12 @@ const setValueDefault = () => {
     inputCapcha.val('');
     Captcha();
 }
+const setDefault = () => {
 
-$('#closeModal ').click(setValueDefault);
-$('.modaloverlay').click(setValueDefault);
+    setValueDefault();
+}
+$('#closeModal ').click(setDefault);
+$('.modaloverlay').click(setDefault);
 
 // set capcha 
 function Captcha() {
@@ -87,51 +98,52 @@ function removeSpaces(string) {
     return string.split(' ').join('');
 }
 
-// xử lý đường dẫn load file
-
-const handleUrl = (fileUrl) => {
-    const a = fileUrl.replace('https://github.com/','/blob').split('/blob').join('');
-    return a;
-}
 // kiem tra file ton tai
-const checkFileExit = async (fileUrl) => {
-    const urlHandel = handleUrl(fileUrl);
-    const uRl = `${urlDomain}/${urlHandel}`;
-        try{
-            $.get(uRl)
-            .done(function(data) { 
-                console.log(data);
-                // let encrypted = CryptoJS.AES.encrypt(data, "Secret Passphrase");
-                let decrypted = CryptoJS.AES.decrypt(data, "Secret Passphrase");
+const checkFileExit = async (fileUrl,index) => {
+    let url;
+    if(index && index===0){
+        const nameFile = CryptoJS.AES.decrypt(fileUrl, "Secret Passphrase").toString(CryptoJS.enc.Utf8);
+        url = urlDomain + nameFile + '.html';
+    }
+    if(index && index===1){
+        let id = fileUrl.split('/')[5];
+        url = `https://www.googleapis.com/drive/v3/files/${id}?alt=media&key=${api_key}`;
+    }
+    try {
+        $.get(url)
+            .done(function (data) {
+                let encrypted = CryptoJS.AES.encrypt(data, "Secret Passphrase");
+                let decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
                 let str = decrypted.toString(CryptoJS.enc.Utf8);
                 showFile.html(str);
                 setValueDefault();
-            }).fail(function(err) { 
-                showModal();
+            }).fail(function (err) {
+                showModal("Không tồn tại file trong hệ thống");
                 console.log(err)
             })
-        }catch(err){
-           showModal();
-        }
+    } catch (err) {
+        showModal("Lỗi khi load file");
+    }
 }
 
 // su kien khi submit
 
-formCheckFileExis.submit((e) => {
-    e.preventDefault();
-    let fileUrl = inputFilename.val();
-    let capchaValue = inputCapcha.val();
-    if (!ValidCaptcha(capchaValue)) {
-        let str = "Mã capcha không đúng"
-        inputCapcha.val('')
-        showErroFilename(inputCapcha, true, str)
-        return;
-    }
-    if (removeSpaces(fileUrl).length === 0) {
-        showErroFilename(inputFilename, true, "Hãy nhập vào tên file");
-        return;
-    } else {
-        checkFileExit(fileUrl);
-    }
+btnGetfile.each((index)=>{
+    $(btnGetfile[index]).click((e)=>{
+        e.preventDefault();
+        let fileUrl = inputFilename.val();
+        let capchaValue = inputCapcha.val();
+        if (!ValidCaptcha(capchaValue)) {
+            let str = "Mã capcha không đúng"
+            inputCapcha.val('')
+            showErroFilename(inputCapcha, true, str)
+            return;
+        }
+        if (removeSpaces(fileUrl).length === 0) {
+            showErroFilename(inputFilename, true, "Hãy nhập vào tên file");
+            return;
+        } else {
+            checkFileExit(fileUrl,index);
+        }
+    })
 })
-

@@ -1,3 +1,20 @@
+#bodyCent{
+    background: linear-gradient(to bottom right ,#00b7ff,#ffffc7);
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 20px;
+}
+.bg-white{
+    background-color: white;
+}   
+#formCheckFileExis,.showResult{
+    width: 100%;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.4);
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 5px;
+}
 .modalErr{
     position: fixed;
     top: 0;
@@ -26,4 +43,50 @@
     margin: 0 auto;
     margin-top: 100px;
     width: 30%;
+}
+.btn.btn-primary.btnGetfile{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.labelFor{
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.capchaRandon{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+#capchaService{
+    background-image: url('../img/bg6.png');
+    margin-top: 30px;
+    margin-bottom: 0px;
+    padding: 10px;
+    line-height: 100%;
+    font-weight: 600;
+    color: white;
+    border-radius: 3px;
+}
+.showResult{
+    height: 100vh;
+    padding-bottom: 0;
+    overflow-y: auto;
+}
+i.icon{
+    font-size: 30px;
+    margin-right: 10px;
+}
+.icon-git{
+    color: black;
+}
+.icon-ggdrive{
+    color: green;
 }
