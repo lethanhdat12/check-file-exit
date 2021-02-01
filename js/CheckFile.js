@@ -1,5 +1,5 @@
 
-const btnGetfile = $('.btnGetfile');
+const getfileGit = $('#getfileGit');
 const capchaService = $('#capchaService');
 const modalErr = $('.modalErr');
 const modalBody = $('.modal-body');
@@ -7,12 +7,81 @@ const showFile = $('#showFile');
 const inputCapcha = $('.inputCapcha');
 const inputFilename = $('.inputFilename');
 const urlDomain = "https://raw.githubusercontent.com/lethanhdat12/check-file-exit/main/output/";
+let login = false;
+let arrDrive = [];
+
+var authorizeButton = $('#getfileggDrive');
+var CLIENT_ID = '485187263893-ntfcc5ofuc7prrdmbbol1fqvluv7o2k9.apps.googleusercontent.com';
+var API_KEY = 'AIzaSyByoRL7XnjlkQ67_1Pef6_bgjYL5Du2--g';
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
+var SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
 
 
-const api_key = 'AIzaSyAdhR_5jHcCrbw83MEqtmUh0a2aIiCYyOI';
+function getContentFile(url) {
+    try {
+        $.get(url)
+            .done(function (data) {
+                // let encrypted = CryptoJS.AES.encrypt(data, "SecretPassphrase");
+                let decrypted = CryptoJS.AES.decrypt(data, "Secret Passphrase");
+                let str = decrypted.toString(CryptoJS.enc.Utf8);
+                showFile.html(str);
+                setValueDefault();
+            }).fail(function (err) {
+                showModal("Không tồn tại file trong hệ thống");
+                console.log(err)
+            })
+    } catch (err) {
+        showModal("Lỗi khi load file");
+    }
+}
+
+authorizeButton.click(handleClientLoad);
+
+function handleClientLoad() {
+    gapi.load('client:auth2', initClient);
+}
+
+function initClient() {
+    gapi.client.init({
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES
+    }).then(function () {
+        // Listen for sign-in state changes.
+        listFiles();
+        // Handle the initial sign-in state.
+        gapi.auth2.getAuthInstance().isSignedIn.get();
+        handleAuthClick();
+    }, function (error) {
+        console.log(error)
+    });
+}
+
+function handleAuthClick(event) {
+    gapi.auth2.getAuthInstance().signIn();
+}
+
+function listFiles() {
+    gapi.client.drive.files.list({
+        'fields': "nextPageToken, files(id, name)"
+    }).then(function (response) {
+        arrDrive = [...JSON.parse(response.body).files];
+        let fileUrl = handelValidate();
+        if(fileUrl){
+            fileUrl+='.html';
+            let id = arrDrive.find(element => element.name === fileUrl);
+            let url = `https://www.googleapis.com/drive/v3/files/${id.id}?alt=media&key=${API_KEY}`;
+            getContentFile(url);
+        }
+    }); 
+}
 
 let btnGet = 1;
 window.onload = () => {
+    capchaService.bind('copy paste cut drag drop', function (e) {
+        e.preventDefault();
+     });
     Captcha();
 }
 
@@ -99,51 +168,33 @@ function removeSpaces(string) {
 }
 
 // kiem tra file ton tai
-const checkFileExit = async (fileUrl,index) => {
-    let url;
-    if(index && index===0){
-        const nameFile = CryptoJS.AES.decrypt(fileUrl, "Secret Passphrase").toString(CryptoJS.enc.Utf8);
-        url = urlDomain + nameFile + '.html';
+const checkFileExit = (fileUrl) => {
+    let url = urlDomain + fileUrl + '.html';
+    getContentFile(url)
+}
+
+const handelValidate = ()=>{
+    let fileUrl = inputFilename.val();
+    let capchaValue = inputCapcha.val();
+    if (!ValidCaptcha(capchaValue)) {
+        let str = "Mã capcha không đúng"
+        inputCapcha.val('')
+        showErroFilename(inputCapcha, true, str)
+        return false;
     }
-    if(index && index===1){
-        let id = fileUrl.split('/')[5];
-        url = `https://www.googleapis.com/drive/v3/files/${id}?alt=media&key=${api_key}`;
+    if (removeSpaces(fileUrl).length === 0) {
+        showErroFilename(inputFilename, true, "Hãy nhập vào tên file");
+        return false;
     }
-    try {
-        $.get(url)
-            .done(function (data) {
-                let encrypted = CryptoJS.AES.encrypt(data, "Secret Passphrase");
-                let decrypted = CryptoJS.AES.decrypt(encrypted, "Secret Passphrase");
-                let str = decrypted.toString(CryptoJS.enc.Utf8);
-                showFile.html(str);
-                setValueDefault();
-            }).fail(function (err) {
-                showModal("Không tồn tại file trong hệ thống");
-                console.log(err)
-            })
-    } catch (err) {
-        showModal("Lỗi khi load file");
+    else{
+        return fileUrl;
     }
 }
 
 // su kien khi submit
-
-btnGetfile.each((index)=>{
-    $(btnGetfile[index]).click((e)=>{
-        e.preventDefault();
-        let fileUrl = inputFilename.val();
-        let capchaValue = inputCapcha.val();
-        if (!ValidCaptcha(capchaValue)) {
-            let str = "Mã capcha không đúng"
-            inputCapcha.val('')
-            showErroFilename(inputCapcha, true, str)
-            return;
-        }
-        if (removeSpaces(fileUrl).length === 0) {
-            showErroFilename(inputFilename, true, "Hãy nhập vào tên file");
-            return;
-        } else {
-            checkFileExit(fileUrl,index);
-        }
-    })
+getfileGit.click((e) => {
+    let fileurl = handelValidate();
+    if(fileurl){
+        checkFileExit(fileurl)
+    }
 })

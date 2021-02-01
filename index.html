@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,8 +19,8 @@
                     <form id="formCheckFileExis">
                         <div class="form-group">
                             <label for="filename" class="labelFor">File name</label>
-                            <input type="text" class="form-control inputFilename" id="filename" aria-describedby="emailHelp"
-                                placeholder="file name" autocomplete="off">
+                            <input type="text" class="form-control inputFilename" id="filename"
+                                aria-describedby="emailHelp" placeholder="file name" autocomplete="off">
                         </div>
                         <div class="form-row">
                             <div class="col-md-8">
@@ -35,10 +35,12 @@
                             </div>
                         </div>
                         <a type="submit" class="btn btn-primary btnGetfile" id="getfileGit">
-                            <i class="fab fa-github-square icon icon-git"></i>  <span class="textBtn">Get file from GitHub</span> 
+                            <i class="fab fa-github-square icon icon-git"></i> <span class="textBtn">Get file from
+                                GitHub</span>
                         </a>
                         <a type="submit" class="btn btn-primary btnGetfile" id="getfileggDrive">
-                            <i class="fab fa-google-drive icon icon-ggdrive"></i> <span class="textBtn">Get file from Google Drive</span>   
+                            <i class="fab fa-google-drive icon icon-ggdrive"></i> <span class="textBtn">Get file from
+                                Google Drive</span>
                         </a>
                     </form>
                 </div>
@@ -70,13 +72,16 @@
     </div>
     </div>
     <!-- Modal -->
-    <script src="./js/ggapi.js" ></script>
+    <script src="./js/ggapi.js"></script>
     <script src="./js/aes.js"></script>
     <script src="./js/jquery-3.5.1.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src="./js/CheckFile.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
 </body>
 
 </html>
